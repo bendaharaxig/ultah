@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Husna.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  color:#fff;
+  overflow-x:hidden;
+}
+
+.overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;justify-content:center;align-items:center;
+  z-index:999;
+}
+
+.popup{
+  background:#111;padding:20px;border-radius:20px;
+  text-align:center;width:90%;max-width:320px;
+  box-shadow:0 0 30px gold;
+}
+
+.popup canvas{
+  width:100%;border-radius:15px;margin-bottom:15px;
+}
+
+.popup button{
+  margin-top:10px;padding:10px 20px;border:none;
+  border-radius:20px;background:gold;font-weight:bold;cursor:pointer;
+}
+
+.playing{
+  margin-top:10px;font-size:0.8rem;color:gold;
+  animation:blink 1s infinite;
+}
+
+@keyframes blink{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+.container{padding:20px;text-align:center;}
+
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:2.6rem;margin-top:30px;
+  background:linear-gradient(45deg,gold,#fff,#ffd700);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+.subtitle{margin-top:10px;opacity:0.8;font-size:0.95rem;}
+
+.btn{
+  display:inline-block;margin-top:30px;padding:14px 32px;
+  border-radius:40px;background:linear-gradient(45deg,gold,#b8860b);
+  color:#000;font-weight:600;box-shadow:0 0 25px rgba(255,215,0,0.7);
+  cursor:pointer;
+}
+
+.gallery{
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.gallery img{
+  width:100%;
+  height:170px; /* diperbesar lagi */
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 0 18px rgba(255,215,0,0.5);
+}
+
+.glitter{
+  position:fixed;top:-10px;width:8px;height:8px;border-radius:50%;
+  background:radial-gradient(circle,#fff,gold);
+  box-shadow:0 0 10px gold,0 0 20px #fff;
+  animation:glitterFall linear infinite;
+}
+
+@keyframes glitterFall{
+  0%{transform:translateY(-20px);opacity:0;}
+  20%{opacity:1;}
+  100%{transform:translateY(110vh);opacity:0.6;}
+}
+
+footer{margin-top:40px;font-size:0.8rem;opacity:0.7;}
+</style>
+</head>
+<body>
+
+<div id="popup" class="overlay">
+  <div class="popup" id="step1">
+    <img id="popupImage" src="fotodavin.jpeg" alt="foto" style="width:100%;border-radius:15px;margin-bottom:15px;">
+    <p>Hallo ini buatan davin yang imuttt lho wkwkw ihhh maafin</p>
+    <button onclick="nextStep()">Next</button>
+  </div>
+
+  <div class="popup" id="step2" style="display:none;">
+    <p>Besarkan volume HP kamu dulu ya Huss</p>
+    <button onclick="playMusic()">Play ▶</button>
+    <div id="status" class="playing" style="display:none;">Musik sedang diputar...</div>
+    <button id="closeBtn" onclick="closePopup()" style="display:none;">Close</button>
+  </div>
+</div>
+
+<div class="container">
+  <h1>✨ Happy Birthday ✨</h1>
+  <p class="subtitle">Untuk Husna Amnestifa Arifin 12G 💛</p>
+
+  <div class="btn" onclick="openSurprise()">Ini ihhh di pencet🎁</div>
+
+  <div id="surprise" style="display:none;">
+
+    <div class="gallery">
+      <img src="foto1.jpeg">
+      <img src="foto2.jpeg">
+      <img src="foto3.jpeg">
+      <img src="foto4.jpeg">
+      <img src="foto5.jpeg">
+      <img src="foto6.jpeg">
+    </div>
+
+    <div id="text" style="margin-top:20px;"></div>
+
+    <audio id="music" loop>
+      <source src="lagu1.mp3" type="audio/mpeg">
+    </audio>
+
+  </div>
+
+  <footer>Ucapan dari Kementerian Keuangan </footer>
+</div>
+
+<script>
+let canvas=document.getElementById('photoCanvas');
+let ctx=canvas.getContext('2d');
+let img=new Image();
+img.src='https://picsum.photos/400/300';
+img.onload=function(){
+  canvas.width=img.width;
+  canvas.height=img.height;
+  ctx.drawImage(img,0,0);
+}
+
+function nextStep(){
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+}
+
+function playMusic(){
+  let music=document.getElementById('music');
+  music.play();
+  document.getElementById('status').style.display='block';
+  document.getElementById('closeBtn').style.display='inline-block';
+}
+
+function closePopup(){
+  document.getElementById('popup').style.display='none';
+}
+
+function openSurprise(){
+  document.getElementById('surprise').style.display='block';
+  createGlitter();
+  typeText();
+}
+
+function createGlitter(){
+  for(let i=0;i<100;i++){
+    let g=document.createElement('div');
+    g.className='glitter';
+    g.style.left=Math.random()*100+'vw';
+    g.style.animationDuration=(5+Math.random()*5)+'s';
+    document.body.appendChild(g);
+  }
+}
+
+let messages=[
+"HBD hus hussss wkwkw selamat yaa nambah usia...",
+"Jangan jadi orang sek freak lagi ya...",
+"pokoknyaa sehat sehat trs.....",
+"Semoga semua impianmu tercapai"
+];
+
+let i=0;
+function typeText(){
+  if(i<messages.length){
+    document.getElementById('text').innerHTML=messages[i];
+    i++;
+    setTimeout(typeText,2500);
+  }
+}
+</script>
+
+</body>
+</html>
